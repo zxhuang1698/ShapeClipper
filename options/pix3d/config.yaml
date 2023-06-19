@@ -1,0 +1,124 @@
+group: pix3d_output
+name: pretrain
+load: 
+
+batch_size: 12
+max_epoch: 300
+yaml:
+seed: 0
+gpu: 0
+cpu: false
+output_root: output
+image_size: [224,224]
+resume: false
+pretrain: false
+
+pre: 
+    iter: 2000
+    latent_std: 1
+    radius: 0.5
+    density: true
+    viewpoint: true
+    sample_range: [-1, 1]
+    sample_points: 10000
+
+arch:
+    latent_dim_shape: 512
+    latent_dim_rgb: 512
+    enc_network: resnet34
+    enc_pretrained: true
+    force_symmetry: true
+    impl_sdf:
+        beta_init: 0.1
+        proj_latent_dim: 64
+        n_hidden_layers: 5
+        n_channels: 64
+        geometric_init: true
+        init_sphere_radius: 0.5
+        pos_enc: 6
+        skip_connection: [1,2]
+        weight_norm: false
+        eikonal_sample_range: [-1, 1]
+    impl_rgb:
+        proj_latent_dim: 64
+        n_hidden_layers: 3
+        n_channels: 64
+        pos_enc: 6
+        weight_norm: false
+
+eval:
+    batch_size: 1
+    image_size: [64, 64]
+    n_vis: 3
+    n_vis_classes: 10
+    vox_res: 64
+    num_points: 100000
+    range: [-0.6,0.6]
+    f_thresholds: [0.005, 0.01, 0.02, 0.05, 0.1, 0.2]
+
+data:
+    num_classes: 1
+    k_nearest: 5
+    max_img_cat: 
+    dataset: pix3d
+    num_workers: 12
+    augment: 
+    bgcolor: 1
+    pix3d:
+        cat: chair
+        azim_range: [-180, 180]
+        elev_range: [-90, 90]
+        theta_range: [-90, 90]
+
+render:
+    sampler: uniform
+    n_samples_uniform: 64
+    rand_sample: 512
+    ray_uniform_fac: 5
+    normal_model: volume
+
+reg:
+    normal_tol: 0.2
+    normal_pow: 1
+    sample_NN: true
+    sample_temp: 4
+    n_views: 1
+    emd_p: 2
+    mask_mse: 0
+    normal_l1: 5
+
+loss_weight:
+    eikonal: 0.03
+    render: 1
+    mask: 0.5
+    normal: 0.01
+    nearest_img: 1
+    nearest_mask: 0.5
+    nearest_normal: 0.01
+    cam_uniform: 0.1
+    cam_margin: 0.01
+    category_reg: 
+    cam_sym: 0.1
+
+optim:
+    algo: Adam
+    lr: 1.e-4
+    params: {}
+    iter_camera: 0
+
+camera:
+    model: perspective
+    dist: 5
+    focal: 4
+    size_range: 0.2
+    perspect_range: 0.
+
+tb:
+    num_images: [4,8]
+
+freq:
+    scalar: 200 # iterations
+    vis: 1000 # iterations
+    save_vis: 1000
+    eval: 10 # epochs
+    ckpt_latest: 1000 # iterations

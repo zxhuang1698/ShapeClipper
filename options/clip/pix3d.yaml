@@ -1,0 +1,23 @@
+group: CLIP_anno
+name: CLIP_anno
+
+batch_size: 32
+yaml:
+seed: 0
+image_size: [224,224]
+gpu: 0
+cpu: false
+output_root: output
+anno_root: data/Pix3D/CLIP_NN
+k_nearest: 6
+thres: 
+
+data:
+    max_img_cat: 
+    num_classes: 1
+    dataset: pix3d
+    num_workers: 8
+    bgcolor: 1
+    pix3d:
+        cat: chair
+    augment: 

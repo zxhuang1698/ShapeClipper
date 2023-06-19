@@ -1,0 +1,17 @@
+# checkpoints
+*.ckpt
+
+# outputs
+output
+weights
+
+# data
+data/Pix3D**
+
+# cache
+**__pycache__**
+
+# build
+external/chamfer3D/build
+external/chamfer3D/chamfer_3D.egg-info
+external/chamfer3D/dist
